@@ -1,0 +1,1580 @@
+:root {
+  --felt-light: #1e6b3a;
+  --felt-mid: #0d4a28;
+  --felt-dark: #08351c;
+  --gold: #e0b84a;
+  --card-w: clamp(52px, 18vw, 74px);
+  --card-h: clamp(74px, 25.5vw, 104px);
+  --table-max: 400px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #f4efe4;
+  background: radial-gradient(circle at 50% 40%, #2a1c12 0%, #120c08 70%);
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.stage {
+  min-height: 100dvh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.table {
+  position: relative;
+  width: min(100vw, var(--table-max), calc(100dvh * 9 / 16));
+  aspect-ratio: 9 / 16;
+  max-height: 100dvh;
+  max-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border-radius: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(255, 255, 255, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, 0.4) 0%, transparent 45%),
+    linear-gradient(165deg, #1a5c32 0%, #0d3d22 42%, #082818 100%);
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.35),
+    0 0 0 2px rgba(224, 184, 74, 0.55),
+    0 0 0 4px #1a1208,
+    0 18px 40px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 480px) {
+  .table {
+    border-radius: 28px;
+  }
+}
+
+/* ===== ИГРОВОЙ ХЕДЕР ===== */
+.game-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 14px) 2px;
+  z-index: 20;
+  position: relative;
+}
+
+.burger-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.burger-btn span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #e0b84a;
+  border-radius: 1px;
+}
+
+.burger-btn:active span {
+  background: #ffe9a8;
+}
+
+.game-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(0.85rem, 3.8vw, 1.05rem);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0;
+  white-space: nowrap;
+  background: linear-gradient(180deg, #ffe9a8 0%, #e0b84a 50%, #b8860b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.4));
+}
+
+.game-header-spacer {
+  width: 36px;
+  flex-shrink: 0;
+}
+
+/* Модалка бургера */
+.burger-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 1500;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 48px 12px 12px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: inherit;
+}
+
+.burger-modal-content {
+  background: linear-gradient(165deg, #1a140e 0%, #0e0a06 100%);
+  border: 1px solid rgba(224, 184, 74, 0.35);
+  border-radius: 14px;
+  padding: 8px;
+  min-width: 180px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.burger-menu-item {
+  background: transparent;
+  border: none;
+  color: #f4efe4;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.burger-menu-item:active {
+  background: rgba(224, 184, 74, 0.15);
+}
+
+.burger-menu-cancel {
+  color: rgba(244, 239, 228, 0.5);
+  font-weight: 500;
+  font-size: 0.82rem;
+}
+
+.table-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  min-height: 0;
+  position: relative;
+}
+
+/* Идеальное центрирование колоды по умолчанию */
+.stock {
+  position: relative;
+  width: var(--card-w);
+  height: var(--card-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playing-card {
+  width: var(--card-w);
+  height: var(--card-h);
+  border-radius: 9px;
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+
+.card-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+.card-front, .card-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+/* ==========================================================================
+   ИНТЕРАКТИВ ДЛЯ КАРТ ИГРОКА (HOVER-ЭФФЕКТ)
+   ========================================================================== */
+
+/* Включаем курсор-указатель для карт в руке игрока */
+/* ЭФФЕКТ ПРИПОДНИМАНИЯ КАРТЫ ИГРОКА (Включается только после полной раздачи) */
+#player-hand.hand-dealt .playing-card {
+  cursor: pointer;
+  transition: z-index 0.15s ease; 
+}
+
+/* Ховер сработает только тогда, когда у руки появится класс .hand-dealt */
+#player-hand.hand-dealt .playing-card:hover {
+  z-index: 100 !important;
+}
+
+#player-hand.hand-dealt .playing-card:hover .card-3d {
+  transform: translateY(-15px) rotateY(180deg) scale(1.25) !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+  z-index: 999; 
+}
+
+/* Обеспечиваем идеальную плавность анимации в обе стороны */
+#player-hand .card-3d {
+  /* cubic-bezier делает подъем пружинящим и «живым», а не линейным */
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.25s ease;
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  border-radius: 9px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.face.back,
+.playing-card.is-back,
+.deck-layer {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      #6b1c28 0 6px,
+      #8b2433 6px 12px
+    ),
+    radial-gradient(circle at 50% 50%, #9a3342, #4a1018);
+  background-blend-mode: multiply;
+  border: 2px solid #f3e2c0;
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 5px #7a1f2a,
+    inset 0 0 0 7px #e8c98a;
+}
+
+.face.front {
+  background: linear-gradient(160deg, #fffdf8 0%, #f4ead8 100%);
+  border: 1px solid #d7c4a3;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.32);
+  transform: rotateY(180deg);
+  color: #1a1a1a;
+}
+
+.face.front.red {
+  color: #c0392b;
+}
+
+.face.front.black {
+  color: #1c1c1c;
+}
+
+.corner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  font-size: 0.78rem;
+}
+
+.corner b {
+  font-size: 0.92rem;
+}
+
+.corner i {
+  font-style: normal;
+  font-size: 0.85rem;
+}
+
+.corner.tl {
+  top: 6px;
+  left: 7px;
+}
+
+.corner.br {
+  right: 7px;
+  bottom: 6px;
+  transform: rotate(180deg);
+}
+
+.pip {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 2.1rem;
+}
+
+/* Козырь лежит ровно под колодой и сдвинут вправо */
+.trump {
+  position: absolute;
+  z-index: 1;
+  left: 24px;
+  top: 0;
+  transform: rotate(90deg);
+}
+
+.trump .card-3d {
+  transform: rotateY(180deg);
+}
+
+.deck {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  width: var(--card-w);
+  height: var(--card-h);
+}
+
+.deck-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.deck-layer:nth-child(1) {
+  transform: translate(3px, 3px);
+}
+
+.deck-layer:nth-child(2) {
+  transform: translate(1.5px, 1.5px);
+}
+
+/* ===== НИЖНЯЯ ПАНЕЛЬ ДЕЙСТВИЙ ===== */
+.game-action-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 6px clamp(10px, 3vw, 16px) clamp(10px, 2.5vh, 16px);
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.55) 30%);
+  z-index: 30;
+  position: relative;
+  min-height: 56px;
+}
+
+/* Профиль строго по центру — не зависит от кнопки справа */
+.player-profile-btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid rgba(224, 184, 74, 0.7);
+  background: radial-gradient(circle at 35% 30%, #2a1c12 0%, #120c08 100%);
+  color: #e0b84a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  box-shadow:
+    0 0 0 3px rgba(224, 184, 74, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  z-index: 2;
+}
+
+.player-profile-btn:active {
+  transform: translate(-50%, -50%) scale(0.94);
+}
+
+/* Универсальная кнопка действий — справа, не влияет на центр */
+.action-btn,
+#deal-btn.action-btn,
+.deal-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 110px;
+  height: 42px;
+  padding: 0 16px 0 18px;
+  border: 1.5px solid rgba(224, 184, 74, 0.65);
+  border-radius: 22px;
+  background: linear-gradient(165deg, rgba(30, 22, 12, 0.95) 0%, rgba(14, 10, 6, 0.98) 100%);
+  color: #e0b84a;
+  font-family: inherit;
+  font-size: clamp(0.78rem, 2.8vw, 0.9rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow:
+    0 0 0 1px rgba(224, 184, 74, 0.15),
+    0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 0.1s ease, border-color 0.15s ease, opacity 0.25s ease;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
+}
+
+.action-btn:active,
+#deal-btn.action-btn:active {
+  transform: scale(0.96);
+  border-color: rgba(224, 184, 74, 0.9);
+}
+
+.action-btn:disabled,
+#deal-btn.action-btn:disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.action-btn-text {
+  line-height: 1;
+}
+
+.action-btn-arrow {
+  font-size: 1.2rem;
+  font-weight: 300;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+/* Рука игрока — карты уходят под нижнюю панель ~1/3 высоты */
+.hand {
+  flex: 0 0 auto;
+  min-height: clamp(90px, 16vh, 118px);
+  padding: 0 clamp(4px, 1.5vw, 8px);
+  margin-bottom: -42px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  position: relative;
+  z-index: 25;
+}
+
+.hand-label {
+  display: none;
+}
+
+.player-hand {
+  position: relative;
+  height: clamp(110px, 20vh, 140px);
+}
+
+.player-hand .playing-card {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  margin-left: calc(var(--card-w) / -2);
+  transform-origin: 50% 100%;
+}
+
+@media (max-height: 640px) {
+  .table {
+    width: min(100vw, var(--table-max), calc(100dvh * 9 / 16));
+  }
+  /* card sizes already use clamp — nothing extra needed */
+}
+
+/* ==========================================================================
+   СТАРТОВОЕ МЕНЮ — премиальный тёмный дизайн
+   ========================================================================== */
+.start-menu {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(ellipse at 50% 28%, rgba(224, 184, 74, 0.14) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 80%, rgba(0, 0, 0, 0.5) 0%, transparent 50%),
+    linear-gradient(165deg, #1a120c 0%, #0e0a06 45%, #080604 100%);
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+/* --- Шапка профиля --- */
+.menu-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: clamp(10px, 2.5vw, 14px) clamp(10px, 3vw, 16px) 0;
+  z-index: 2;
+}
+
+.menu-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.menu-avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.menu-user-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.menu-username {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #f4efe4;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.menu-crown {
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+}
+
+.menu-rating {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.68rem;
+  color: rgba(224, 184, 74, 0.9);
+  font-weight: 600;
+}
+
+.menu-balance {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(224, 184, 74, 0.28);
+  border-radius: 20px;
+  padding: 4px 6px 4px 10px;
+  flex-shrink: 0;
+}
+
+.menu-coin-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffe9a8, #d4a017 60%, #8a5a0a);
+  color: #3b2208;
+  font-size: 0.7rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.menu-coin-amount {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #f4efe4;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.menu-coin-plus {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: radial-gradient(circle at 35% 30%, #ffe9a8, #d4a017 55%, #8a5a0a);
+  color: #3b2208;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.menu-coin-plus:active {
+  transform: scale(0.92);
+}
+
+.menu-gear {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(224, 184, 74, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(224, 184, 74, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s ease;
+}
+
+.menu-gear:active {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* --- Центральный контент --- */
+.menu-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(8px, 2vw, 16px) clamp(14px, 4vw, 22px);
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 0;
+  z-index: 1;
+}
+
+/* Логотип */
+.menu-logo {
+  margin-bottom: clamp(18px, 4.5vh, 32px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-logo-diamond {
+  margin-bottom: 6px;
+  filter: drop-shadow(0 0 18px rgba(224, 184, 74, 0.35));
+}
+
+.menu-title {
+  font-size: clamp(1.7rem, 8vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #e0b84a;
+  text-shadow:
+    0 0 24px rgba(224, 184, 74, 0.45),
+    0 2px 8px rgba(0, 0, 0, 0.6);
+  margin: 0;
+  line-height: 1.05;
+  background: linear-gradient(180deg, #ffe9a8 0%, #e0b84a 45%, #b8860b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.menu-title-sub {
+  font-size: clamp(0.85rem, 3.5vw, 1.05rem);
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(224, 184, 74, 0.85);
+  margin: 4px 0 0;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Кнопки-ряды */
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 2vh, 14px);
+  width: 100%;
+  max-width: 320px;
+}
+
+.menu-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: clamp(12px, 2.8vw, 15px) clamp(12px, 3vw, 16px);
+  border-radius: 16px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: transform 0.12s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+.menu-row:active {
+  transform: scale(0.985);
+}
+
+.menu-row-primary {
+  background: linear-gradient(135deg, rgba(224, 184, 74, 0.18) 0%, rgba(138, 90, 10, 0.25) 100%);
+  border-color: rgba(224, 184, 74, 0.7);
+  box-shadow:
+    0 0 0 1px rgba(224, 184, 74, 0.25),
+    0 0 20px rgba(224, 184, 74, 0.2),
+    inset 0 1px 0 rgba(255, 233, 168, 0.15);
+}
+
+.menu-row-primary:active {
+  box-shadow:
+    0 0 0 1px rgba(224, 184, 74, 0.4),
+    0 0 12px rgba(224, 184, 74, 0.15),
+    inset 0 1px 0 rgba(255, 233, 168, 0.1);
+}
+
+.menu-row-glass {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.menu-row-glass:active {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(224, 184, 74, 0.3);
+}
+
+.menu-row-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-row-icon-avatar {
+  width: 36px;
+  height: 36px;
+}
+
+.menu-row-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.menu-row-label {
+  font-size: clamp(0.92rem, 3.4vw, 1.05rem);
+  font-weight: 700;
+  color: #f4efe4;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+.menu-row-primary .menu-row-label {
+  color: #ffe9a8;
+  text-shadow: 0 0 12px rgba(224, 184, 74, 0.35);
+}
+
+.menu-row-desc {
+  font-size: clamp(0.65rem, 2.4vw, 0.75rem);
+  color: rgba(244, 239, 228, 0.5);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.menu-row-arrow {
+  flex-shrink: 0;
+  font-size: 1.35rem;
+  color: rgba(224, 184, 74, 0.55);
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* --- Нижний таббар --- */
+.menu-tabbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  padding: clamp(8px, 1.8vh, 12px) 0 clamp(10px, 2.2vh, 16px);
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.35) 40%);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  z-index: 2;
+}
+
+.menu-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: rgba(224, 184, 74, 0.55);
+  font-family: inherit;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.15s ease;
+}
+
+.menu-tab:active,
+.menu-tab.active {
+  color: #e0b84a;
+}
+
+/* Старые .menu-btn стили (для модалки настроек и game-over) */
+.menu-btn {
+  padding: clamp(10px, 2.8vw, 15px) clamp(24px, 8vw, 40px);
+  font-size: clamp(0.85rem, 3.2vw, 1.05rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #3b2208;
+  border: 2px solid rgba(255, 221, 140, 0.85);
+  border-radius: 50px;
+  background: radial-gradient(circle at 35% 30%, #ffe9a8 0%, #d4a017 45%, #8a5a0a 100%);
+  cursor: pointer;
+  box-shadow:
+    0 6px 0 #6b4308,
+    0 12px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  max-width: 90%;
+}
+
+.menu-btn:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 2px 0 #6b4308,
+    0 6px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== ПРОФИЛЬ СОПЕРНИКА ===== */
+.opponent-profile {
+  position: relative;
+  z-index: 5;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding-top: 2px;
+  text-align: center;
+  opacity: 0;
+}
+
+.opponent-avatar {
+  position: relative;
+  z-index: 10;
+  width: clamp(56px, 15vw, 68px);
+  height: clamp(56px, 15vw, 68px);
+  border-radius: 50%;
+  border: 2.5px solid rgba(224, 184, 74, 0.65);
+  background: radial-gradient(circle at 35% 30%, #2a2a2a 0%, #111 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 3px rgba(224, 184, 74, 0.12),
+    0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+.opponent-name {
+  position: relative;
+  z-index: 10;
+  order: -1;
+  display: block;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: 140px;
+  padding: 5px 14px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #f4efe4;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1.5px solid rgba(224, 184, 74, 0.4);
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+/* Зона карт бота */
+.opponent-hand {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 0;
+  margin-top: 0;
+}
+
+.opponent-hand .playing-card {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--card-h) * -0.62);
+  margin-left: calc(var(--card-w) / -2) !important;
+  transform-origin: 50% 100%;
+  z-index: 3;
+}
+/* Зона для сброса карт по центру стола */
+.drop-zone {
+  position: absolute;
+  /* Шире и выше — проще бросать «рядом» для перевода */
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(360px, 92vw);   /* ширина */
+  height: min(340px, 46vh);  /* высота */
+  border: 2px dashed rgba(255, 255, 255, 0);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0);
+  pointer-events: none;
+  transition: all 0.25s ease-in-out;
+  z-index: 1;
+}
+
+/* Красивое неоновое свечение проявляется ТОЛЬКО когда ты заносишь карту над центром стола */
+.drop-zone.active {
+  border-color: rgba(255, 224, 102, 0.5);
+  background: rgba(255, 224, 102, 0.04);
+  box-shadow: 0 0 25px rgba(255, 224, 102, 0.15), 
+              inset 0 0 15px rgba(255, 224, 102, 0.05);
+}
+.table > .playing-card {
+  position: absolute !important;
+  /* Убираем !important у top, чтобы GSAP мог двигать карты по вертикали */
+  top: 0; 
+  left: 50% !important; 
+  margin-left: calc(var(--card-w) / -2) !important; 
+  transform-origin: center center;
+}
+/* Отбой справа — сброшенные карты */
+.discard-pile {
+  position: absolute;
+  right: -36px;          /* Половина карты за экраном */
+  top: 48%;              /* На уровне колоды слева */
+  transform: translateY(-50%);
+  width: var(--card-w);
+  height: var(--card-h);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.discard-pile .playing-card {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  margin-left: calc(var(--card-w) / -2);
+  transform-origin: center center;
+}
+
+/* Счётчик карт в колоде */
+.deck-count {
+  position: absolute;
+  top: -8px;
+  left: calc(100% + 6px);   /* Справа от колоды/козыря */
+  transform: none;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #f4efe4;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.5);
+  padding: 2px 7px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,221,140,0.35);
+  z-index: 10;
+  min-width: 22px;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.deck-count.visible {
+  opacity: 1;
+}
+
+/* Индикатор козырной масти когда колода пуста.
+   Фиксированная зона «бывшей колоды» слева — не налезает на карты и кнопку */
+.trump-indicator {
+  position: absolute;
+  left: 10px;
+  top: 38%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffe9a8 0%, #d4a017 55%, #8a5a0a 100%);
+  border: 2px solid rgba(255,221,140,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  z-index: 6;
+  pointer-events: none;
+}
+
+@media (max-height: 700px) {
+  .trump-indicator {
+    top: 36%;
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+    left: 8px;
+  }
+}
+
+@media (min-height: 800px) {
+  .trump-indicator {
+    top: 40%;
+  }
+}
+
+.trump-indicator.red {
+  color: #c0392b;
+}
+.trump-indicator.black {
+  color: #1a1a1a;
+}
+
+/* Экран окончания игры */
+.game-over {
+  position: absolute;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(18, 12, 8, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: inherit;
+}
+
+.game-over-content {
+  text-align: center;
+  padding: 24px;
+}
+
+.game-over-title {
+  font-size: clamp(1.5rem, 7vw, 2.1rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #f4efe4;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  margin-bottom: 8px;
+}
+
+.game-over-subtitle {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  letter-spacing: 0.06em;
+  margin-bottom: 36px;
+}
+
+.game-over-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+.menu-btn-secondary {
+  background: radial-gradient(circle at 35% 30%, #4a3a2a 0%, #2a1c12 45%, #1a1208 100%);
+  color: #e0d4b8;
+  border-color: rgba(255,221,140,0.4);
+  box-shadow: 0 6px 0 #1a1208, 0 12px 20px rgba(0,0,0,0.5);
+}
+
+.menu-btn-secondary:active {
+  box-shadow: 0 2px 0 #1a1208, 0 6px 10px rgba(0,0,0,0.4);
+}
+
+/* Старое правило .settings-btn больше не нужно — кнопка теперь .menu-row */
+
+/* Модальное окно настроек — полностью резиновое */
+.settings-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(18, 12, 8, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: inherit;
+  padding: clamp(12px, 4vw, 24px);
+  box-sizing: border-box;
+}
+
+.settings-content {
+  text-align: center;
+  padding: clamp(16px, 5vw, 28px) clamp(14px, 4vw, 22px);
+  width: 100%;
+  max-width: min(280px, 85vw);
+  box-sizing: border-box;
+}
+
+.settings-title {
+  font-size: clamp(1.1rem, 4.5vw, 1.35rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #f4efe4;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.5);
+  margin-bottom: 0.4em;
+}
+
+.settings-desc {
+  font-size: clamp(0.7rem, 2.8vw, 0.85rem);
+  opacity: 0.7;
+  margin-bottom: clamp(16px, 4vh, 28px);
+  letter-spacing: 0.04em;
+}
+
+/* Список настроек с галочками */
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: clamp(16px, 3.5vh, 22px);
+  width: 100%;
+  text-align: left;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  user-select: none;
+}
+
+.settings-item:active {
+  background: rgba(224, 184, 74, 0.1);
+  border-color: rgba(224, 184, 74, 0.35);
+}
+
+.settings-check {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.settings-check-box {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(224, 184, 74, 0.45);
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.settings-check-box svg {
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.settings-check:checked + .settings-check-box {
+  background: radial-gradient(circle at 35% 30%, #ffe9a8 0%, #d4a017 55%, #8a5a0a 100%);
+  border-color: rgba(255, 221, 140, 0.85);
+  color: #3b2208;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.settings-check:checked + .settings-check-box svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.settings-item-label {
+  font-size: clamp(0.88rem, 3.2vw, 1rem);
+  font-weight: 600;
+  color: #f4efe4;
+  letter-spacing: 0.03em;
+}
+
+.settings-divider {
+  height: 1px;
+  margin: 6px 4px;
+  background: linear-gradient(90deg, transparent, rgba(224, 184, 74, 0.25), transparent);
+}
+
+.settings-save-btn {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.settings-close-btn {
+  padding: clamp(8px, 2vw, 11px) clamp(18px, 6vw, 28px);
+  font-size: clamp(0.75rem, 2.6vw, 0.88rem);
+  opacity: 0.9;
+  width: 100%;
+}
+
+/* ===== ЛОББИ (список столов) ===== */
+.lobby-modal,
+.create-game-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: rgba(12, 8, 5, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: inherit;
+  padding: clamp(10px, 3vw, 16px);
+  box-sizing: border-box;
+}
+
+.lobby-content {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.lobby-header {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.lobby-back-btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(224, 184, 74, 0.28);
+  border-radius: 20px;
+  color: rgba(224, 184, 74, 0.9);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 6px 12px 6px 8px;
+  cursor: pointer;
+}
+
+.lobby-back-btn:active {
+  background: rgba(224, 184, 74, 0.12);
+}
+
+.lobby-titles {
+  text-align: center;
+}
+
+.lobby-title {
+  margin: 0;
+  font-size: clamp(1.05rem, 4.2vw, 1.3rem);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #f4efe4;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.lobby-filter {
+  margin: 6px 0 0;
+  font-size: clamp(0.7rem, 2.6vw, 0.82rem);
+  color: rgba(224, 184, 74, 0.85);
+  letter-spacing: 0.03em;
+}
+
+.lobby-tables-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 2px;
+  margin-bottom: 14px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.lobby-table-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(224, 184, 74, 0.22);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.lobby-table-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+}
+
+.lobby-table-id {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #ffe9a8;
+  letter-spacing: 0.04em;
+}
+
+.lobby-table-meta {
+  font-size: 0.72rem;
+  color: rgba(244, 239, 228, 0.55);
+  letter-spacing: 0.02em;
+}
+
+.lobby-table-meta b {
+  color: rgba(244, 239, 228, 0.85);
+  font-weight: 600;
+}
+
+.lobby-join-btn {
+  flex-shrink: 0;
+  min-width: 72px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 18px;
+  border: 1.5px solid rgba(224, 184, 74, 0.65);
+  background: linear-gradient(165deg, rgba(30, 22, 12, 0.95) 0%, rgba(14, 10, 6, 0.98) 100%);
+  color: #e0b84a;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.lobby-join-btn:active {
+  transform: scale(0.96);
+  border-color: rgba(224, 184, 74, 0.95);
+}
+
+.lobby-create-btn {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+/* ===== СОЗДАНИЕ ИГРЫ ===== */
+.create-game-modal {
+  align-items: center;
+  z-index: 1250;
+}
+
+.create-game-content {
+  text-align: center;
+  padding: clamp(16px, 5vw, 28px) clamp(14px, 4vw, 22px);
+  width: 100%;
+  max-width: min(300px, 88vw);
+  box-sizing: border-box;
+  background: linear-gradient(165deg, #1a140e 0%, #0e0a06 100%);
+  border: 1px solid rgba(224, 184, 74, 0.35);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+}
+
+.lobby-empty-hint {
+  margin: 24px 8px;
+  text-align: center;
+  font-size: 0.82rem;
+  color: rgba(244, 239, 228, 0.45);
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+}
+
+
+/* ===== Индикатор хода (онлайн) — в нижней панели слева от аватара ===== */
+.game-action-bar .turn-status {
+  position: absolute;
+  left: clamp(10px, 3vw, 16px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 14px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  z-index: 3;
+  pointer-events: none;
+  max-width: 42%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.game-action-bar .turn-status--active {
+  color: #1a1208;
+  background: linear-gradient(180deg, #ffe9a8, #e0b84a);
+  box-shadow: 0 2px 10px rgba(224, 184, 74, 0.45);
+}
+.game-action-bar .turn-status--wait {
+  color: rgba(244, 239, 228, 0.8);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(224, 184, 74, 0.35);
+}
+/* Старый вариант в хедере — скрыть, если вдруг остался */
+.game-header > .turn-status {
+  display: none !important;
+}
+
+
+/* ===== Подсветка хода вокруг аватарок ===== */
+.player-profile-btn.turn-glow-green,
+.opponent-avatar.turn-glow-green {
+  box-shadow:
+    0 0 0 3px rgba(80, 220, 120, 0.85),
+    0 0 16px 4px rgba(60, 200, 100, 0.55),
+    0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  border-color: rgba(90, 230, 130, 0.95) !important;
+  animation: turnPulseGreen 1.6s ease-in-out infinite;
+}
+.player-profile-btn.turn-glow-red,
+.opponent-avatar.turn-glow-red {
+  box-shadow:
+    0 0 0 3px rgba(220, 80, 80, 0.8),
+    0 0 14px 3px rgba(200, 60, 60, 0.45),
+    0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  border-color: rgba(230, 90, 90, 0.9) !important;
+  animation: turnPulseRed 1.6s ease-in-out infinite;
+}
+@keyframes turnPulseGreen {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(80, 220, 120, 0.75), 0 0 12px 3px rgba(60, 200, 100, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(80, 220, 120, 1), 0 0 20px 6px rgba(60, 200, 100, 0.65); }
+}
+@keyframes turnPulseRed {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(220, 80, 80, 0.7), 0 0 10px 2px rgba(200, 60, 60, 0.35); }
+  50% { box-shadow: 0 0 0 4px rgba(230, 90, 90, 0.95), 0 0 16px 5px rgba(200, 60, 60, 0.55); }
+}
+
+/* Старые текстовые плашки хода скрыты */
+.game-action-bar .turn-status,
+.game-header > .turn-status {
+  display: none !important;
+}
+
+
+/* ===== ДЕМО: неактивные пункты меню ===== */
+.menu-row-disabled,
+.menu-row-disabled:active {
+  opacity: 0.38;
+  filter: grayscale(0.35) brightness(0.75);
+  pointer-events: none;
+  cursor: default;
+  box-shadow: none !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+  background: rgba(20, 16, 12, 0.55) !important;
+}
+.menu-row-disabled .menu-row-label,
+.menu-row-disabled .menu-row-desc,
+.menu-row-disabled .menu-row-arrow {
+  color: rgba(180, 170, 150, 0.55) !important;
+}
+.menu-row-disabled .menu-row-icon {
+  opacity: 0.45;
+}
+
+/* Тренировка — единственная активная (первичная подсветка) */
+#play-btn.menu-row-primary {
+  border-color: rgba(224, 184, 74, 0.75);
+  box-shadow:
+    0 0 0 1px rgba(224, 184, 74, 0.2),
+    0 0 22px rgba(224, 184, 74, 0.28),
+    0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.menu-tab-disabled,
+.menu-tab-disabled:active {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: default;
+}
+.menu-gear-disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: default;
+}
+
+/* Водяной знак на игровом сукне */
+.table-watermark {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%) rotate(-18deg);
+  z-index: 2;
+  pointer-events: none;
+  user-select: none;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: clamp(1.35rem, 6.5vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: rgba(255, 255, 255, 0.07);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+/* Показываем, когда меню скрыто (идёт игра) */
+.table:not(:has(#start-menu[style*="display: flex"])) .table-watermark,
+.table.game-active .table-watermark {
+  opacity: 1;
+}
+/* fallback без :has — класс ставит JS */
+.table.game-active .table-watermark {
+  opacity: 1;
+}

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Дурак — nevagee.su</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="stage">
+    <div class="table">
+
+      <!-- Стартовое меню — премиальный тёмный дизайн -->
+      <div id="start-menu" class="start-menu">
+        <!-- Верхняя шапка профиля -->
+        <header class="menu-header">
+          <div class="menu-profile">
+            <div class="menu-avatar">
+              <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
+                <defs>
+                  <linearGradient id="avGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#3a2a1a"/>
+                    <stop offset="100%" stop-color="#1a1208"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="20" cy="20" r="19" fill="url(#avGrad)" stroke="rgba(224,184,74,0.55)" stroke-width="1.5"/>
+                <circle cx="20" cy="15" r="6.5" fill="#c9a84c"/>
+                <ellipse cx="20" cy="29" rx="10" ry="7" fill="#c9a84c"/>
+              </svg>
+            </div>
+            <div class="menu-user-info">
+              <div class="menu-username">
+                Николай
+                <svg class="menu-crown" viewBox="0 0 16 12" width="14" height="11" aria-hidden="true">
+                  <path d="M1 10 L3 3 L6 7 L8 2 L10 7 L13 3 L15 10 Z" fill="#e0b84a" stroke="#c9a027" stroke-width="0.6"/>
+                </svg>
+              </div>
+              <div class="menu-rating">
+                <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M6 1l1.5 3.2 3.5.5-2.5 2.5.6 3.5L6 9.2 2.9 10.7l.6-3.5L1 4.7l3.5-.5z" fill="#e0b84a"/></svg>
+                1240
+              </div>
+            </div>
+          </div>
+          <div class="menu-balance">
+            <span class="menu-coin-icon">$</span>
+            <span class="menu-coin-amount">12 450</span>
+            <button type="button" class="menu-coin-plus" aria-label="Пополнить">+</button>
+          </div>
+          <button type="button" id="header-settings-btn" class="menu-gear menu-gear-disabled" disabled aria-disabled="true" aria-label="Настройки">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          </button>
+        </header>
+
+        <div class="menu-content">
+          <!-- Логотип: ромб + пики + название -->
+          <div class="menu-logo">
+            <div class="menu-logo-diamond">
+              <svg viewBox="0 0 64 64" width="56" height="56" aria-hidden="true">
+                <defs>
+                  <linearGradient id="diaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffe9a8"/>
+                    <stop offset="45%" stop-color="#e0b84a"/>
+                    <stop offset="100%" stop-color="#8a5a0a"/>
+                  </linearGradient>
+                  <filter id="diaGlow" x="-40%" y="-40%" width="180%" height="180%">
+                    <feGaussianBlur stdDeviation="2.5" result="blur"/>
+                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  </filter>
+                </defs>
+                <path d="M32 4 L60 32 L32 60 L4 32 Z" fill="none" stroke="url(#diaGrad)" stroke-width="2.2" filter="url(#diaGlow)"/>
+                <path d="M32 14 L50 32 L32 50 L14 32 Z" fill="rgba(224,184,74,0.08)" stroke="url(#diaGrad)" stroke-width="1"/>
+                <text x="32" y="38" text-anchor="middle" font-size="22" fill="#e0b84a" font-family="Georgia, serif">♠</text>
+              </svg>
+            </div>
+            <h1 class="menu-title">ДУРАК</h1>
+            <p class="menu-title-sub">nevagee.su</p>
+          </div>
+
+          <!-- Кнопки меню -->
+          <div class="menu-buttons">
+            <!-- ИГРАТЬ — визуальная (быстрый матч, пока без логики) -->
+            <button type="button" class="menu-row menu-row-disabled" id="play-match-btn" disabled aria-disabled="true">
+              <span class="menu-row-icon">
+                <svg viewBox="0 0 32 28" width="28" height="24" aria-hidden="true">
+                  <rect x="2" y="4" width="14" height="20" rx="2" fill="none" stroke="#e0b84a" stroke-width="1.6" transform="rotate(-12 9 14)"/>
+                  <rect x="12" y="2" width="14" height="20" rx="2" fill="rgba(224,184,74,0.15)" stroke="#e0b84a" stroke-width="1.6" transform="rotate(8 19 12)"/>
+                  <text x="19" y="15" text-anchor="middle" font-size="9" fill="#e0b84a">♠</text>
+                </svg>
+              </span>
+              <span class="menu-row-text">
+                <span class="menu-row-label">ИГРАТЬ</span>
+                <span class="menu-row-desc">Быстрый поиск матча</span>
+              </span>
+              <span class="menu-row-arrow">›</span>
+            </button>
+
+            <!-- Режим онлайна → фильтр для лобби (id=settings-btn) -->
+            <button type="button" id="settings-btn" class="menu-row menu-row-disabled settings-btn" disabled aria-disabled="true">
+              <span class="menu-row-icon">
+                <svg viewBox="0 0 36 28" width="30" height="24" aria-hidden="true">
+                  <rect x="1" y="6" width="10" height="16" rx="1.5" fill="none" stroke="rgba(224,184,74,0.7)" stroke-width="1.3" transform="rotate(-18 6 14)"/>
+                  <rect x="9" y="4" width="10" height="16" rx="1.5" fill="none" stroke="rgba(224,184,74,0.8)" stroke-width="1.3" transform="rotate(-6 14 12)"/>
+                  <rect x="17" y="3" width="10" height="16" rx="1.5" fill="none" stroke="rgba(224,184,74,0.85)" stroke-width="1.3" transform="rotate(6 22 11)"/>
+                  <rect x="24" y="5" width="10" height="16" rx="1.5" fill="rgba(224,184,74,0.12)" stroke="#e0b84a" stroke-width="1.4" transform="rotate(16 29 13)"/>
+                </svg>
+              </span>
+              <span class="menu-row-text">
+                <span class="menu-row-label">Режим онлайна</span>
+                <span class="menu-row-desc">Настройка сетевого фильтра</span>
+              </span>
+              <span class="menu-row-arrow">›</span>
+            </button>
+
+            <!-- Тренировка → запуск игры против бота (id=play-btn) -->
+            <button type="button" id="play-btn" class="menu-row menu-row-primary">
+              <span class="menu-row-icon menu-row-icon-avatar">
+                <svg viewBox="0 0 40 40" width="34" height="34" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="girlGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#3d2b1f"/>
+                      <stop offset="100%" stop-color="#1a120c"/>
+                    </linearGradient>
+                  </defs>
+                  <circle cx="20" cy="20" r="19" fill="url(#girlGrad)" stroke="rgba(224,184,74,0.5)" stroke-width="1.4"/>
+                  <!-- headphones -->
+                  <path d="M8 18 Q8 10 20 10 Q32 10 32 18" fill="none" stroke="#c9a84c" stroke-width="2.2" stroke-linecap="round"/>
+                  <rect x="6" y="17" width="5" height="8" rx="2" fill="#c9a84c"/>
+                  <rect x="29" y="17" width="5" height="8" rx="2" fill="#c9a84c"/>
+                  <!-- face -->
+                  <circle cx="20" cy="19" r="7" fill="#e8c9a0"/>
+                  <ellipse cx="20" cy="28" rx="6" ry="4" fill="#e8c9a0"/>
+                  <!-- hair -->
+                  <path d="M13 16 Q13 11 20 11 Q27 11 27 16 Q27 13 20 13 Q13 13 13 16" fill="#2a1a10"/>
+                  <!-- eyes -->
+                  <circle cx="17.5" cy="18.5" r="1.1" fill="#2a1a10"/>
+                  <circle cx="22.5" cy="18.5" r="1.1" fill="#2a1a10"/>
+                </svg>
+              </span>
+              <span class="menu-row-text">
+                <span class="menu-row-label">Тренировка</span>
+                <span class="menu-row-desc">Игра против Алины</span>
+              </span>
+              <span class="menu-row-arrow">›</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Нижний таббар -->
+        <nav class="menu-tabbar">
+          <button type="button" class="menu-tab menu-tab-disabled" disabled aria-disabled="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 21V11l4-3 4 3v10"/>
+              <path d="M4 21h16"/>
+              <path d="M12 3l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z"/>
+            </svg>
+            <span>Лидеры</span>
+          </button>
+          <button type="button" class="menu-tab menu-tab-disabled" id="tab-settings-btn" disabled aria-disabled="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+            <span>Настройки</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Окно настроек: единый список с галочками -->
+      <div id="settings-modal" class="settings-modal" style="display:none;">
+        <div class="settings-content">
+          <h2 class="settings-title">Режим игры</h2>
+          <p class="settings-desc">Выберите количество карт в колоде и тип игры</p>
+
+          <div class="settings-list" role="group" aria-label="Настройки партии">
+            <label class="settings-item" data-group="deck">
+              <input type="checkbox" id="opt-36" class="settings-check" data-group="deck" data-value="36">
+              <span class="settings-check-box" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="12" height="12"><path d="M3 8.5 L6.5 12 L13 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="settings-item-label">36 карт</span>
+            </label>
+            <label class="settings-item" data-group="deck">
+              <input type="checkbox" id="opt-24" class="settings-check" data-group="deck" data-value="24">
+              <span class="settings-check-box" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="12" height="12"><path d="M3 8.5 L6.5 12 L13 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="settings-item-label">24 карты</span>
+            </label>
+
+            <div class="settings-divider"></div>
+
+            <label class="settings-item" data-group="rules">
+              <input type="checkbox" id="opt-podkidnoy" class="settings-check" data-group="rules" data-value="podkidnoy">
+              <span class="settings-check-box" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="12" height="12"><path d="M3 8.5 L6.5 12 L13 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="settings-item-label">Подкидной</span>
+            </label>
+            <label class="settings-item" data-group="rules">
+              <input type="checkbox" id="opt-perevodnoy" class="settings-check" data-group="rules" data-value="perevodnoy">
+              <span class="settings-check-box" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="12" height="12"><path d="M3 8.5 L6.5 12 L13 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="settings-item-label">Переводной</span>
+            </label>
+          </div>
+
+          <button type="button" id="settings-save-btn" class="menu-btn settings-save-btn">Сохранить</button>
+          <button type="button" id="settings-close" class="menu-btn menu-btn-secondary settings-close-btn">Закрыть</button>
+        </div>
+      </div>
+
+      <!-- ===== ЛОББИ: список столов ===== -->
+      <div id="lobby-modal" class="lobby-modal" style="display:none;" aria-hidden="true">
+        <div class="lobby-content">
+          <header class="lobby-header">
+            <button type="button" id="lobby-back-btn" class="lobby-back-btn" aria-label="Назад">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+              <span>Назад</span>
+            </button>
+            <div class="lobby-titles">
+              <h2 class="lobby-title">Доступные столы</h2>
+              <p id="lobby-filter-label" class="lobby-filter">Фильтр: 36 карт, Подкидной</p>
+            </div>
+          </header>
+
+          <div id="lobby-tables-list" class="lobby-tables-list" role="list">
+            <p id="lobby-empty-hint" class="lobby-empty-hint">Пока нет открытых столов. Создайте свой!</p>
+          </div>
+
+          <button type="button" id="lobby-create-btn" class="menu-btn lobby-create-btn">Создать игру</button>
+        </div>
+      </div>
+
+      <!-- ===== СОЗДАНИЕ ИГРЫ ===== -->
+      <div id="create-game-modal" class="create-game-modal" style="display:none;" aria-hidden="true">
+        <div class="create-game-content">
+          <h2 class="settings-title">Создать стол</h2>
+          <p class="settings-desc">Параметры вашей сетевой партии</p>
+
+          <div class="settings-list" role="group" aria-label="Параметры стола">
+            <label class="settings-item" data-group="create-deck">
+              <input type="checkbox" id="create-opt-36" class="settings-check" data-group="create-deck" checked>
+              <span class="settings-check-box" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="12" height="12"><path d="M3 8.5 L6.5 12 L13 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="settings-item-label">36 карт</span>
+            </label>
+            <label class="settings-item" data-group="create-deck">
+              <input type="checkbox" id="create-opt-24" class="settings-check" data-group="create-deck">
+              <span class="settings-check-box" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="12" height="12"><path d="M3 8.5 L6.5 12 L13 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="settings-item-label">24 карты</span>
+            </label>
+
+            <div class="settings-divider"></div>
+
+            <label class="settings-item" data-group="create-rules">
+              <input type="checkbox" id="create-opt-podkidnoy" class="settings-check" data-group="create-rules" checked>
+              <span class="settings-check-box" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="12" height="12"><path d="M3 8.5 L6.5 12 L13 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="settings-item-label">Подкидной</span>
+            </label>
+            <label class="settings-item" data-group="create-rules">
+              <input type="checkbox" id="create-opt-perevodnoy" class="settings-check" data-group="create-rules">
+              <span class="settings-check-box" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="12" height="12"><path d="M3 8.5 L6.5 12 L13 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="settings-item-label">Переводной</span>
+            </label>
+          </div>
+
+          <button type="button" id="confirm-create-btn" class="menu-btn settings-save-btn">Подтвердить и создать</button>
+          <button type="button" id="create-game-cancel" class="menu-btn menu-btn-secondary settings-close-btn">Отмена</button>
+        </div>
+      </div>
+
+      <!-- ===== ИГРОВОЙ ЭКРАН ===== -->
+      <div class="table-watermark" aria-hidden="true">nevagee.su</div>
+
+
+      <!-- Хедер: бургер + название -->
+      <header class="game-header">
+        <button type="button" id="burger-btn" class="burger-btn" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </button>
+        <h1 class="game-title">ДУРАК</h1>
+        <div class="game-header-spacer"></div>
+      </header>
+
+      <!-- Модалка бургера -->
+      <div id="burger-modal" class="burger-modal" style="display:none;">
+        <div class="burger-modal-content">
+          <button type="button" id="to-main-menu-btn" class="burger-menu-item">В главное меню</button>
+          <button type="button" id="burger-close-btn" class="burger-menu-item burger-menu-cancel">Отмена</button>
+        </div>
+      </div>
+
+      <!-- Профиль соперника -->
+      <div id="opponent-profile" class="opponent-profile">
+        <div class="opponent-name">БОТ АЛИНА</div>
+        <div class="opponent-avatar">
+          <svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden="true">
+            <defs>
+              <linearGradient id="botGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#2a2a2a"/>
+                <stop offset="100%" stop-color="#111"/>
+              </linearGradient>
+            </defs>
+            <circle cx="32" cy="32" r="30" fill="url(#botGrad)" stroke="rgba(224,184,74,0.6)" stroke-width="2"/>
+            <!-- robot head -->
+            <rect x="18" y="18" width="28" height="24" rx="8" fill="#e8e8e8"/>
+            <circle cx="24" cy="28" r="4" fill="#1a1a1a"/>
+            <circle cx="40" cy="28" r="4" fill="#1a1a1a"/>
+            <circle cx="24" cy="28" r="1.5" fill="#e0b84a"/>
+            <circle cx="40" cy="28" r="1.5" fill="#e0b84a"/>
+            <rect x="26" y="35" width="12" height="3" rx="1.5" fill="#888"/>
+            <!-- antenna -->
+            <line x1="32" y1="18" x2="32" y2="12" stroke="#e0b84a" stroke-width="2"/>
+            <circle cx="32" cy="10" r="3" fill="#e0b84a"/>
+          </svg>
+        </div>
+        <div id="opponent-hand" class="opponent-hand"></div>
+      </div>
+
+      <div class="table-center">
+        <!-- Контейнер колоды -->
+        <div id="deck" class="stock">
+          <!-- Козырная карта (изначально скрыта) -->
+          <div id="trump-card" class="playing-card trump" style="opacity: 0;">
+            <div class="card-3d">
+              <div class="face back"></div>
+              <div id="trump-front" class="face front">
+                <span class="corner tl"><b class="trump-rank"></b><i class="trump-suit"></i></span>
+                <span class="pip trump-suit"></span>
+                <span class="corner br"><b class="trump-rank"></b><i class="trump-suit"></i></span>
+              </div>
+            </div>
+          </div>
+          <!-- Закрытая колода -->
+          <div class="deck">
+            <div class="deck-layer"></div>
+            <div class="deck-layer"></div>
+            <div class="deck-layer"></div>
+          </div>
+          <!-- Счётчик карт -->
+          <div id="deck-count" class="deck-count">36</div>
+        </div>
+      </div>
+
+      <!-- Индикатор козыря когда колода пуста -->
+      <div id="trump-indicator" class="trump-indicator" style="display:none;">
+        <span id="trump-indicator-symbol">♠</span>
+      </div>
+
+      <!-- Отбой справа -->
+      <div id="discard-pile" class="discard-pile"></div>
+
+      <!-- Рука игрока -->
+      <section class="hand" aria-label="Карты игрока">
+        <p class="hand-label">Ваша рука</p>
+        <div id="player-hand" class="player-hand"></div>
+      </section>
+
+      <!-- Нижняя панель действий -->
+      <div class="game-action-bar">
+        <button type="button" class="player-profile-btn" aria-label="Профиль">
+          <svg viewBox="0 0 40 40" width="28" height="28" aria-hidden="true">
+            <circle cx="20" cy="14" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M6 34 Q6 24 20 24 Q34 24 34 34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button type="button" id="deal-btn" class="action-btn">
+          <span class="action-btn-text">Раздать</span>
+          <span class="action-btn-arrow">›</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+  <div id="drop-zone" class="drop-zone"></div>
+
+  <!-- Экран окончания игры -->
+  <div id="game-over" class="game-over" style="display:none;">
+    <div class="game-over-content">
+      <h2 id="game-over-title" class="game-over-title">Победа!</h2>
+      <p id="game-over-subtitle" class="game-over-subtitle">Бот Алина — дурак</p>
+      <div class="game-over-buttons">
+        <button id="restart-btn" class="menu-btn">Сыграть заново</button>
+        <button id="menu-btn" class="menu-btn menu-btn-secondary">Главное меню</button>
+      </div>
+    </div>
+  </div>
+
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/Draggable.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
